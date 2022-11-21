@@ -14,7 +14,7 @@
   <div id="content-wrap">
     <div class="container">
       <div class="row justify-content-end">
-        <div th:if="${!bucket.getLaptops().isEmpty()}" class="col-5 mb-3">
+        <div th:if="${!bucket.laptops.isEmpty()}" class="col-5 mb-3">
           <form  th:method="POST" th:action="@{/bucket/clear}">
             <div class="text-center">
               <button class="btn btn-primary profile-button" type="submit">clear bucket</button></div>
@@ -23,11 +23,11 @@
       </div>
 
       <div class="row">
-        <div th:if="${bucket.getLaptops().isEmpty()}" class="col-12 mb-3">
+        <div th:if="${bucket.laptops.isEmpty()}" class="col-12 mb-3">
           <h5>No Laptops in bucket</h5>
         </div>
 
-        <div th:each="laptop: ${bucket.getLaptops()}" class="col-8 mb-3">
+        <div th:each="laptop: ${bucket.laptops}" class="col-8 mb-3">
           <table class="table">
             <tbody>
             <tr>
@@ -46,7 +46,7 @@
           </table>
         </div>
 
-        <div class="col-12" th:if="${!bucket.getLaptops().isEmpty()}">
+        <div class="col-12" th:if="${!bucket.laptops.isEmpty()}">
           <form  th:method="POST" th:action="@{/bucket/order}">
             <label for="description"></label>
             <textarea id="description" name="description" rows="5" cols="60"> </textarea>

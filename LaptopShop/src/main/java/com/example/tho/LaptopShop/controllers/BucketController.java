@@ -35,6 +35,7 @@ public class BucketController {
     @GetMapping("/bucket")
     public String bucket(Principal principal,Model model){
         Person person = peopleService.getUserByPrincipal(principal);
+        bucketService.createBucket(person);
         model.addAttribute("person",person);
         model.addAttribute("bucket",person.getBucket());
         return "bucket/bucket-view";

@@ -55,7 +55,7 @@ public class Person {
     private Image avatar;
 
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bucket_id")
     private Bucket bucket;
 

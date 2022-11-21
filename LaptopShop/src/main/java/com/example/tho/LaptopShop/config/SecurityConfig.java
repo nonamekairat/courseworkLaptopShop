@@ -2,6 +2,7 @@ package com.example.tho.LaptopShop.config;
 
 
 import com.example.tho.LaptopShop.Services.PersonDetailsService;
+import com.example.tho.LaptopShop.security.oauth2.CustomerOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -18,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final PersonDetailsService personDetailsService;
+    private final CustomerOAuth2UserService customerOAuth2UserService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -32,6 +34,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/process_login")
                 .defaultSuccessUrl("/", true)
                 .failureUrl("/auth/login?error")
+                .and()
+                .oauth2Login()
+                //later
+                .loginPage("/auth/login")
+                .userInfoEndpoint()
+                .userService(customerOAuth2UserService)
+                .and()
+                //later
+
                 .and()
                 .logout()
                 .logoutUrl("/logout")

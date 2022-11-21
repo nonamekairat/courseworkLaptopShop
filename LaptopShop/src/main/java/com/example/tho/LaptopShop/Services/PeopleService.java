@@ -45,7 +45,7 @@ public class PeopleService {
     @Transactional
     public void register(Person person){
         person.setPassword(passwordEncoder.encode(person.getPassword()));
-        person.getRoles().add(Role.ROLE_ADMIN);
+        person.getRoles().add(Role.ROLE_USER);
         person.setActive(true);
         peopleRepository.save(person);
     }
@@ -59,7 +59,7 @@ public class PeopleService {
         Person person = getUserByPrincipal(principal);
         Bucket bucket = person.getBucket();
         if(bucket == null) bucket = new Bucket();
-        bucket.setUser(person);
+//        bucket.setUser(person);
 //        if(person.getBucket() == null){
 //            person.setBucket(new Bucket());
 //        }

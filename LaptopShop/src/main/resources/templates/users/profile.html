@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Start page</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+  <link href="/resources/css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<header th:include="blocks/fragments.html :: header" th:with="person=${person}"></header>
+
+
+<div id="page-container">
+  <div id="content-wrap">
+    <div class="container rounded bg-white mt-5 mb-5">
+      <div class="row">
+        <div class="col-md-3 border-right ">
+          <div class="d-flex flex-column align-items-center text-center p-3 py-5" th:if="${person.avatar} == null">
+            <img class="rounded-circle mt-5 img-cub" width="150px" height="150px" src="/resources/avatar.png"><span class="font-weight-bold" th:text="${person.username}">Edogaru</span><span class="text-black-50" th:text="${person.email}">edogaru@mail.com.my</span><span> </span>
+            <form action="/profile/edit">
+              <input type="submit" value="edit" />
+            </form>
+          </div>
+          <div class="d-flex flex-column align-items-center text-center p-3 py-5" th:if="${person.avatar} != null">
+            <img class="rounded-circle mt-5 img-cub" width="150px" height="150px" th:src="${person.avatar}"><span class="font-weight-bold" th:text="${person.username}">Edogaru</span><span class="text-black-50" th:text="${person.email}">edogaru@mail.com.my</span><span> </span>
+            <form action="/profile/edit">
+              <input type="submit" value="edit" />
+            </form>
+          </div>
+
+        </div>
+
+        <div class="col-md-6 d-flex flex-column bd-highlight mb-3 profile-info">
+          <div class="p-3 py-5 w-100 bd-highlight">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h4 class="text-right">Profile Settings</h4>
+            </div>
+            <div class="row mt-2">
+              <div class="col-md-12">
+                <table class="table">
+                  <tbody>
+                  <tr>
+                    <th>First Name</th>
+                    <td th:text="${person.name}">name</td>
+                  </tr>
+                  <tr>
+                    <th>Last Name</th>
+                    <td th:text="${person.lastname}">lastname</td>
+                  </tr>
+                  <tr>
+                    <th>Username</th>
+                    <td th:text="${person.username}">username</td>
+                  </tr>
+                  <tr>
+                    <th>Phone Number</th>
+                    <td th:text="${person.phoneNumber}">phoneNumber</td>
+                  </tr>
+                  <tr>
+                    <th>Address</th>
+                    <td th:text="${person.address}">address</td>
+                  </tr>
+
+                  <tbody/>
+                </table>
+              </div>
+            </div>
+
+          </div>
+          <div class="row w-100 mt-auto p-3 py-5 mt-auto bd-highlight">
+            <div class="col-md-6">
+              <form class="d-flex"
+                    th:action="@{/logout}" th:method="POST">
+                <input type="submit" value="Logout"/>
+              </form>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+</div>
+
+<!--<div th:replace="blocks/fragments.html :: "></div>-->
+
+<footer th:replace="blocks/fragments.html :: footer"></footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+
+</body>
+</html>

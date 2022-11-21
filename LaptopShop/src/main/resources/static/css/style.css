@@ -1,0 +1,165 @@
+#page-container {
+    position: relative;
+    min-height: 100vh;
+}
+
+
+#content-wrap {
+    padding-bottom: 2.5rem;    /* Footer height */
+}
+
+
+
+/*.card:hover .text-truncate{*/
+/*    white-space: pre-wrap;*/
+/*    transition: all 1s ease;*/
+/*}*/
+/*.card:hover {*/
+/*    position: relative;*/
+/*}*/
+
+
+
+
+
+
+
+.card-img-top {
+    width: 100%;
+    height: 15vw;
+    object-fit: cover;
+}
+
+#footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 2.5rem;            /* Footer height */
+}
+
+.text-ram{
+    padding: 5px 10px;
+    border: 1px solid black;
+    font-size: 20px;
+    border-radius: 3px;
+
+}
+
+
+
+
+/*profile*/
+/*.avatar {*/
+/*    position: relative;*/
+/*    display: inline-block;*/
+/*    overflow: hidden;*/
+/*    margin: 0;*/
+/*}*/
+
+
+/*.avatar > img{*/
+/*    display: block;*/
+/*    position: absolute;*/
+/*    top: 50%;*/
+/*    left: 50%;*/
+/*    min-height: 100%;*/
+/*    min-width: 100%;*/
+/*    transform: translate(-50%, -50%);*/
+/*}*/
+
+
+
+.profile-info {
+    min-height: 800px;
+}
+.logout-link {
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+    background: transparent;
+    cursor:none;
+    text-align: end !important;
+    width: 100%;
+    height: 100%;
+}
+
+
+.form-control:focus {
+    box-shadow: none;
+    border-color: #BA68C8
+}
+
+.profile-button {
+    background: rgb(99, 39, 120);
+    box-shadow: none;
+    border: none
+}
+
+.profile-button:hover {
+    background: #682773
+}
+
+.profile-button:focus {
+    background: #682773;
+    box-shadow: none
+}
+
+.profile-button:active {
+    background: #682773;
+    box-shadow: none
+}
+
+.back:hover {
+    color: #682773;
+    cursor: pointer
+}
+
+.labels {
+    font-size: 11px
+}
+
+.add-experience:hover {
+    background: #BA68C8;
+    color: #fff;
+    cursor: pointer;
+    border: solid 1px #BA68C8
+}
+
+/*end profile*/
+
+/*Login*/
+
+.divider:after,
+.divider:before {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #eee;
+}
+.padding-top-login{
+    padding-top: 5rem;
+}
+.btn-full {
+    width: 100%;
+}
+.bg-login{
+    background-color: #ffffff;
+    border-radius: 25px;
+}
+
+.bg-login-gl {
+    background-image:url('/resources/background.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-attachment: fixed;
+    /* animation: colors 5s infinite; */
+
+}
+
+/*end Login*/
+
+
+.img-input input {
+    display:none;
+}

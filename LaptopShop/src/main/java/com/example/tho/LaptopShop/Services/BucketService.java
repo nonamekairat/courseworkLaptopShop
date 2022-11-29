@@ -24,6 +24,7 @@ public class BucketService {
             Bucket bucket = new Bucket();
             bucket.setUser(person);
             person.setBucket(bucket);
+            peopleRepository.save(person);
         }
 
     }

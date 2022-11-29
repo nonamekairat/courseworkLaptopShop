@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
 <head>
   <meta charset="UTF-8">
   <title>Start page</title>
@@ -28,7 +29,6 @@
               <input type="submit" value="edit" />
             </form>
           </div>
-
         </div>
 
         <div class="col-md-6 d-flex flex-column bd-highlight mb-3 profile-info">
@@ -68,7 +68,7 @@
         </div>
 
         <div class="col-md-3">
-          <h4>Your orders</h4>
+          <h4>Orders of User</h4>
           <div class="accordion" id="accordionOrders">
             <div class="accordion-item" th:each="order : ${orders}">
               <h2 class="accordion-header" id="headingThree">
@@ -81,14 +81,45 @@
                   <p th:text="${order.address}"></p>
                   <p th:text="${order.created}"></p>
                   <p th:text="${order.updated}"></p>
-                  <a th:href="@{/profile/order/{username}/{id}(id=${order.id},username=${order.person.username})}">View Details</a>
+                  <a th:href="@{/order/view/{id}(id=${order.id})}">View Details</a>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
+      <div class="row">
+        <div class="col-12 d-flex">
+          <div class="p-2" sec:authorize="hasAuthority('ROLE_ADMIN')">
+            <form th:method="POST" th:action="@{delete/}">
+              <div class="mt-5 text-center">
+                <button class="btn btn-primary profile-button" type="submit">delete</button></div>
+            </form>
+          </div>
+<!--          remove make admin -->
+          <div class="p-2" sec:authorize="hasAuthority('ROLE_ADMIN')">
+            <form th:method="POST" th:action="@{make-admin/}">
+              <div class="mt-5 text-center" th:if="${person.roles.contains('R0LE_ADMIN')}">
+                <button class="btn btn-primary profile-button" type="submit">make user</button>
+              </div>
+              <div class="mt-5 text-center" th:if="${person.roles.contains('R0LE_USER')}">
+                <button class="btn btn-primary profile-button" type="submit">make admin</button>
+              </div>
+            </form>
+          </div>
+<!--          remove make admin -->
+          <div class="p-2" sec:authorize="hasAuthority('ROLE_ADMIN')">
+            <form th:method="POST" th:action="@{ban/}">
 
-
+              <div th:if="${person.isActive()}" class="mt-5 text-center">
+                <button class="btn btn-primary profile-button" type="submit">ban</button>
+              </div>
+              <div th:if="${!person.isActive()}" class="mt-5 text-center">
+                <button class="btn btn-primary profile-button" type="submit">Unban</button>
+              </div>
+            </form>
+          </div>
+        </div>
       </div>
     </div>
   </div>

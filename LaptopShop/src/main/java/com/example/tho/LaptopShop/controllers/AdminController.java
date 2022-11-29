@@ -5,6 +5,7 @@ import com.example.tho.LaptopShop.Services.LaptopService;
 import com.example.tho.LaptopShop.Services.OrderService;
 import com.example.tho.LaptopShop.Services.PeopleService;
 import com.example.tho.LaptopShop.models.Laptop;
+import com.example.tho.LaptopShop.models.Person;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -32,6 +33,7 @@ public class AdminController {
         model.addAttribute("orders",orderService.orderList());
         return "orders/orders-view";
     }
+
     @GetMapping("/order/view/{id}")
     public String orderInfo(@PathVariable Long id, Principal principal, Model model) {
         model.addAttribute("person",peopleService.getUserByPrincipal(principal));
@@ -54,7 +56,44 @@ public class AdminController {
         return "redirect:/";
 
     }
+    @GetMapping("/users/view")
+    public String viewUsers(Model model, Principal principal){
+        model.addAttribute("person", peopleService.getUserByPrincipal(principal));
+        model.addAttribute("users", peopleService.getUsers());
+        return "admin/users-view";
+    }
 
+
+    @GetMapping("/users/view/{id}")
+    public String viewUserById(@PathVariable("id") Long id, Model model, Principal principal){
+        Person user = peopleService.getUserById(id);
+        model.addAttribute("person", peopleService.getUserByPrincipal(principal));
+        model.addAttribute("user", user);
+        model.addAttribute("orders",orderService.orderListByUser(user));
+        return "admin/user-detailed-view";
+    }
+
+
+
+    @PostMapping("/users/view/{id}/delete")
+    public String deleteUser(@PathVariable("id") Long id){
+
+        //doesn't work make it work
+        peopleService.deleteUserById(id);
+        return "redirect:/users/view";
+    }
+
+    //probably remove replace with simple create Admin
+    @PostMapping("/users/view/{id}/make-admin")
+    public String makeAdmin(@PathVariable("id") Long id){
+        peopleService.makeAdmin(id);
+        return "redirect:/users/view";
+    }
+    @PostMapping("/users/view/{id}/ban")
+    public String banUnUser(@PathVariable("id") Long id){
+        peopleService.banUnBanUser(id);
+        return "redirect:/users/view";
+    }
 
 
     @GetMapping("/laptop/create")

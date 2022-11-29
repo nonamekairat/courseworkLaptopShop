@@ -64,7 +64,7 @@ public class BucketController {
             sum = sum.add(BigDecimal.valueOf(laptop.getPrice()));
             orderDetail.setLaptop(laptop);
             orderDetails.add(orderDetail);
-//          Доделать
+//          Доделать`
             if(laptop.getAmount() != 0) laptop.setAmount(laptop.getAmount() - 1);
 
             laptopService.save(laptop);

@@ -28,6 +28,10 @@ public class PeopleService {
     private String uploadPath;
 
 
+    public List<Person> getUsers(){
+        return peopleRepository.findAll();
+    }
+
     public Optional<Person> usernameExist(String username){
         return peopleRepository.findByUsername(username);
     }
@@ -99,4 +103,29 @@ public class PeopleService {
         peopleRepository.save(person);
     }
 
+    public void deleteUserById(Long id) {
+        peopleRepository.deleteById(id);
+    }
+
+    public void makeAdmin(Long id) {
+        Person person = peopleRepository.findById(id).orElse(new Person());
+        if(person.getRoles().contains(Role.ROLE_USER)){
+            person.getRoles().removeAll(person.getRoles());
+            person.getRoles().add(Role.ROLE_ADMIN);
+        }else {
+            person.getRoles().removeAll(person.getRoles());
+            person.getRoles().add(Role.ROLE_USER);
+        }
+        peopleRepository.save(person);
+    }
+
+    public void banUnBanUser(Long id) {
+        Person person = peopleRepository.findById(id).orElse(new Person());
+        if(person.isActive()){
+            person.setActive(false);
+        }else {
+            person.setActive(true);
+        }
+        peopleRepository.save(person);
+    }
 }

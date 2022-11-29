@@ -2,6 +2,7 @@ package com.example.tho.LaptopShop.Services;
 
 
 import com.example.tho.LaptopShop.models.Order;
+import com.example.tho.LaptopShop.models.Person;
 import com.example.tho.LaptopShop.repositories.OrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,10 @@ public class OrderService {
 
     public List<Order> orderList(){
         return orderRepository.findAll();
+    }
+
+    public List<Order> orderListByUser(Person person){
+        return orderRepository.findOrdersByPerson(person);
     }
 
     public Order getOrderById(Long id) {

@@ -19,7 +19,7 @@ public class Bucket {
     @JoinColumn(name = "user_id")
     private Person user;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "buckets_laptops",
     joinColumns = @JoinColumn(name="bucket_id"),
     inverseJoinColumns = @JoinColumn(name = "laptop_id"))

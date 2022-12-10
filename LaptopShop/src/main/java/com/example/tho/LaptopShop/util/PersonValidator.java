@@ -19,66 +19,39 @@ public class PersonValidator implements Validator {
     public boolean supports(Class<?> clazz) {
         return Person.class.equals(clazz);
     }
+    public void validateChange(Person person, Errors errors,Person newPerson){
+
+
+        if(!newPerson.getEmail().equals(person.getEmail())){
+            if (!(peopleService.getByEmail(person.getEmail()) == null)) {
+                errors.rejectValue("email","",
+                        "this email is already used");
+            }
+        }
+        if(!newPerson.getUsername().equals(person.getUsername())){
+            if (peopleService.usernameExist(person.getUsername()).isPresent()) {
+                errors.rejectValue("username","",
+                        "this username is already used");
+            }
+        }
+    }
 
     @Override
     public void validate(Object target, Errors errors) {
         Person person = (Person) target;
 
-        if(person.getId() != null) {
-            Person person1 = peopleService.getUserById(person.getId());
-            if (person1.getUsername().equals(person.getUsername()) && person1.getEmail().equals(person.getEmail()))
-                return;
-            if (!person1.getUsername().equals(person.getUsername()) && !person1.getEmail().equals(person.getEmail())) {
-                if (peopleService.usernameExist(person.getUsername()).isPresent()
-                        && !(peopleService.getEmail(person.getEmail()) == null)){
-                    errors.rejectValue("username", "",
-                            "this username is already used");
-                    errors.rejectValue("email", "",
-                            "this email is already used");
-                    return;
-                }
-                else if (peopleService.usernameExist(person.getUsername()).isPresent()) {
-                    errors.rejectValue("username", "",
-                            "this username is already used");
-                    return;
-                } else if (!(peopleService.getEmail(person.getEmail()) == null)) {
-                    errors.rejectValue("email", "",
-                            "this email is already used");
-                    return;
-                } else {
-                    return;
-                }
-            } else if (!person1.getUsername().equals(person.getUsername()) && person1.getEmail().equals(person.getEmail())) {
-                if (peopleService.usernameExist(person.getUsername()).isPresent()) {
-                    errors.rejectValue("username", "",
-                            "this username is already used");
 
-                }
-            } else if (!person1.getEmail().equals(person.getEmail()) && person1.getUsername().equals(person.getUsername())) {
-                if (!(peopleService.getEmail(person.getEmail()) == null)) {
-                    errors.rejectValue("email", "",
-                            "this email is already used");
-                }
-            }
-            return;
-        }
-
-        if(peopleService.usernameExist(person.getUsername()).isEmpty()
-                && peopleService.getEmail(person.getEmail()) == null)
-            return;
-        else if (peopleService.usernameExist(person.getUsername()).isPresent()) {
+        if (peopleService.usernameExist(person.getUsername()).isPresent()) {
             errors.rejectValue("username","",
                     "this username is already used");
-            return;
-        } else if (!(peopleService.getEmail(person.getEmail()) == null)) {
+        }
+        if (!(peopleService.getByEmail(person.getEmail()) == null)) {
             errors.rejectValue("email","",
                     "this email is already used");
-            return;
         }
-        errors.rejectValue("username","",
-                "this username is already used");
-        errors.rejectValue("email","",
-                "this email is already used");
+
+
+
 
 
 

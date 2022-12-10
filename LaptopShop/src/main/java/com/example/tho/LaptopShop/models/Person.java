@@ -32,7 +32,6 @@ public class Person {
     @Column(unique = true)
     private String email;
 
-    @NotEmpty(message = "Password should not be empty")
     @Column(length = 1000)
     private String password;
 
@@ -58,6 +57,9 @@ public class Person {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bucket_id")
     private Bucket bucket;
+
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
 
 
 }

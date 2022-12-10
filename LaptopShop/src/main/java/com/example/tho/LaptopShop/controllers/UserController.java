@@ -51,12 +51,13 @@ public class UserController {
 
     @PostMapping("/profile/edit")
     public String editProfile(@ModelAttribute("person") @Valid Person person,@RequestParam("file") MultipartFile file,
-                              BindingResult bindingResult) throws IOException {
-        personValidator.validate(person,bindingResult);
+                              BindingResult bindingResult, Principal principal) throws IOException {
+        Person oldPerson = peopleService.getUserByPrincipal(principal);
+        personValidator.validateChange(person,bindingResult,oldPerson);
         if(bindingResult.hasErrors())
             return "/users/profileEdit";
 
-        peopleService.change(person,file);
+        peopleService.change(person,file,oldPerson);
         return "redirect:/profile";
 
     }

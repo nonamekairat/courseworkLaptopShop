@@ -23,6 +23,7 @@
 <!--                                 class="img-fluid" alt="Phone image">-->
 <!--                        </div>-->
                         <div class="col-lg-8 col-md-10 col-xl-8 offset-1">
+                            <div class="" th:if="${message} != null" th:text="${message}"></div>
                             <form name="f" method="post" action="/process_login" class="">
                                 <!-- Email input -->
                                 <div class="form-outline mb-4">
@@ -62,6 +63,12 @@
                                     <i class="fab fa-google me-2"></i>Continue with google</a>
 
                             </form>
+                            <div class="d-flex justify-content-between">
+                                <a th:href="@{/forgot_password}">Forgot your password?</a>
+                                <a th:href="@{/forgot_username}">Forgot your username?</a>
+
+                            </div>
+
                             <form action="/auth/registration">
                                 <button type="submit" class="btn btn-primary btn-block">Sign Up</button>
                             </form>

@@ -26,7 +26,6 @@ public class BucketService {
             person.setBucket(bucket);
             peopleRepository.save(person);
         }
-
     }
 
 //    public Bucket getBucketByPerson(Person person){

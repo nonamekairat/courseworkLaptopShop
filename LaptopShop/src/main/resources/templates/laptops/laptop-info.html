@@ -65,6 +65,24 @@
                     </div>
 
                 </div>
+
+
+            </div>
+            <div class="row">
+                <div class="col-12 mb-3" th:each="review: ${laptop.reviews}">
+                    <p th:text="${review.person.username}" class="mb-3 fw-bold"></p>
+                    <div class="" width="50%">
+                        <p th:text="${review.text}" ></p>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <form th:method="POST" th:action="@{/laptop/make-review/{id} (id=${laptop.id})}" th:object="${review}">
+                        <textarea th:field="*{text}" class="form-control mb-3" id="description" placeholder="leave your review about this notebook" th:value="${review.text}"  rows="5" cols="60"></textarea>
+                        <button class="btn btn-primary profile-button" type="submit">post</button>
+                </form>
+                </div>
+
             </div>
 
         </div>

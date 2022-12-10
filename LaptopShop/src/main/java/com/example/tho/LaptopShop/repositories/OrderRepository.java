@@ -9,5 +9,7 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order, Long> {
 
     List<Order> findOrdersByPerson(Person person);
+    void deleteAllByPerson(Person person);
+    void deleteOrdersByPerson(Person person);
 
 }

@@ -2,6 +2,7 @@ package com.example.tho.LaptopShop.models;
 
 
 import lombok.Data;
+import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -33,11 +34,14 @@ public class Laptop {
     @CreationTimestamp
     private LocalDateTime dateOfCreated;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(name = "laptops_categories",
             joinColumns = @JoinColumn(name="laptop_id"),
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Review> reviews;
 
     @Override
     public String toString() {

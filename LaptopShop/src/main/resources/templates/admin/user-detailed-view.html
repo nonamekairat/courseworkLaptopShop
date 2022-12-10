@@ -19,19 +19,14 @@
         <div class="col-md-3 border-right ">
           <div class="d-flex flex-column align-items-center text-center p-3 py-5" th:if="${person.avatar} == null">
             <img class="rounded-circle mt-5 img-cub" width="150px" height="150px" src="/resources/avatar.png"><span class="font-weight-bold" th:text="${person.username}">Edogaru</span><span class="text-black-50" th:text="${person.email}">edogaru@mail.com.my</span><span> </span>
-            <form action="/profile/edit">
-              <input type="submit" value="edit" />
-            </form>
           </div>
           <div class="d-flex flex-column align-items-center text-center p-3 py-5" th:if="${person.avatar} != null">
             <img class="rounded-circle mt-5 img-cub" width="150px" height="150px" th:src="${person.avatar}"><span class="font-weight-bold" th:text="${person.username}">Edogaru</span><span class="text-black-50" th:text="${person.email}">edogaru@mail.com.my</span><span> </span>
-            <form action="/profile/edit">
-              <input type="submit" value="edit" />
-            </form>
+
           </div>
         </div>
 
-        <div class="col-md-6 d-flex flex-column bd-highlight mb-3 profile-info">
+        <div class="col-md-6 d-flex flex-column bd-highlight mb-3">
           <div class="p-3 py-5 w-100 bd-highlight">
             <div class="d-flex justify-content-between align-items-center mb-3">
               <h4 class="text-right">Profile Settings</h4>
@@ -42,23 +37,23 @@
                   <tbody>
                   <tr>
                     <th>First Name</th>
-                    <td th:text="${person.name}">name</td>
+                    <td th:text="${user.name}">name</td>
                   </tr>
                   <tr>
                     <th>Last Name</th>
-                    <td th:text="${person.lastname}">lastname</td>
+                    <td th:text="${user.lastname}">lastname</td>
                   </tr>
                   <tr>
                     <th>Username</th>
-                    <td th:text="${person.username}">username</td>
+                    <td th:text="${user.username}">username</td>
                   </tr>
                   <tr>
                     <th>Phone Number</th>
-                    <td th:text="${person.phoneNumber}">phoneNumber</td>
+                    <td th:text="${user.phoneNumber}">phoneNumber</td>
                   </tr>
                   <tr>
                     <th>Address</th>
-                    <td th:text="${person.address}">address</td>
+                    <td th:text="${user.address}">address</td>
                   </tr>
                   <tbody/>
                 </table>
@@ -99,10 +94,10 @@
 <!--          remove make admin -->
           <div class="p-2" sec:authorize="hasAuthority('ROLE_ADMIN')">
             <form th:method="POST" th:action="@{make-admin/}">
-              <div class="mt-5 text-center" th:if="${person.roles.contains('R0LE_ADMIN')}">
+              <div class="mt-5 text-center" th:if="${user.roles.contains('R0LE_ADMIN')}">
                 <button class="btn btn-primary profile-button" type="submit">make user</button>
               </div>
-              <div class="mt-5 text-center" th:if="${person.roles.contains('R0LE_USER')}">
+              <div class="mt-5 text-center" th:if="${user.roles.contains('R0LE_USER')}">
                 <button class="btn btn-primary profile-button" type="submit">make admin</button>
               </div>
             </form>
@@ -111,12 +106,23 @@
           <div class="p-2" sec:authorize="hasAuthority('ROLE_ADMIN')">
             <form th:method="POST" th:action="@{ban/}">
 
-              <div th:if="${person.isActive()}" class="mt-5 text-center">
-                <button class="btn btn-primary profile-button" type="submit">ban</button>
+              <div  class="mt-5 text-center">
+                <button th:text="${user.active} ? 'BAN' : 'UNBAN'" class="btn btn-primary profile-button" type="submit"></button>
               </div>
-              <div th:if="${!person.isActive()}" class="mt-5 text-center">
-                <button class="btn btn-primary profile-button" type="submit">Unban</button>
-              </div>
+<!--              <div  class="mt-5 text-center">-->
+<!--                <button th:text="${!person.isBanned()} ? 'UNBAN' : 'BAN'" class="btn btn-primary profile-button" type="submit"></button>-->
+<!--              </div>-->
+<!--              <div  class="mt-5 text-center">-->
+<!--                <button th:text="${person.isActive()} ? 'UNBAN' : 'BAN'" class="btn btn-primary profile-button" type="submit"></button>-->
+<!--              </div>-->
+
+<!--              <div th:if="${!person.isBanned()}" class="mt-5 text-center">-->
+<!--                <button class="btn btn-primary profile-button" type="submit">ban</button>-->
+<!--              </div>-->
+<!--              <div th:if="${person.isBanned()}" class="mt-5 text-center">-->
+<!--                <button class="btn btn-primary profile-button" type="submit">Unban</button>-->
+<!--              </div>-->
+
             </form>
           </div>
         </div>

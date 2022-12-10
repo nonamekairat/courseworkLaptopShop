@@ -50,7 +50,6 @@
                                 <div class="col-md-6"><label for="lastname" class="labels">Last Name</label>
                                     <input type="text" th:field="*{lastname}" class="form-control" id="lastname" value="" placeholder="last name" th:value="${person.lastname}">
                                     <div style="color:red" th:if="${#fields.hasErrors('lastname')}" th:errors="*{lastname}">Username Error</div>
-
                                 </div>
                             </div>
                             <div class="row mt-3">
@@ -74,13 +73,7 @@
                                     <input type="tel" th:field="*{phoneNumber}" class="form-control" id="phonenumber" value="" placeholder="phone number" th:value="${person.phoneNumber}" pattern="[0-9]{9}">
                                     <div style="color:red" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">phoneNumber Error</div>
                                 </div>
-                                <input type="hidden" th:field="*{password}" th:value="${person.password}"/>
-                                <input type="hidden" th:field="*{id}" th:value="${person.id}"/>
-<!--                                image change-->
-                                <input type="hidden" th:field="*{avatar}" th:value="${person.avatar}"/>
-                                <div style="color:red" th:if="${#fields.hasErrors('avatar')}" th:errors="*{avatar}">phoneNumber Error</div>
 
-                                <input type="hidden" th:field="*{roles}" th:value="${person.roles}"/>
 
                             </div>
                             <div class="row mt-3">

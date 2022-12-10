@@ -9,7 +9,9 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.nio.file.attribute.FileAttributeView;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 @Entity
@@ -57,6 +59,16 @@ public class Person {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "bucket_id")
     private Bucket bucket;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "favorites_id")
+    private Favorites favorites;
+
+//    @ManyToMany(cascade = CascadeType.ALL)
+//    @JoinTable(name = "favorite_laptops",
+//            joinColumns = @JoinColumn(name="user_id"),
+//            inverseJoinColumns = @JoinColumn(name = "laptop_id"))
+//    private List<Laptop> favoriteLaptops;
 
     @Column(name = "reset_password_token")
     private String resetPasswordToken;

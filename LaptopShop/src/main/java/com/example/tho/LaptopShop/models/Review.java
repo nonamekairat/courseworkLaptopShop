@@ -16,6 +16,10 @@ public class Review {
 
     private String text;
 
+    private double score;
+
     @OneToOne
     private Person person;
+
+
 }

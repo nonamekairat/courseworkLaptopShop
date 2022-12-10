@@ -18,6 +18,9 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
+import org.springframework.data.domain.Sort.Order;
 
 @Controller
 @RequiredArgsConstructor
@@ -30,11 +33,19 @@ public class LaptopController {
 
     @GetMapping("/")
     public String startPage(@RequestParam(name = "searchWord",required = false) String title,
-            @RequestParam(name = "category",required = false) String categoryName, Model model, Principal principal){
+                            @RequestParam(name = "category",required = false) String categoryName,
+                            @RequestParam(name = "field1",required = false) String field1,
+                            @RequestParam(name = "field2",required = false) String ascDesc,
+                            Model model, Principal principal){
         Person person = peopleService.getUserByPrincipal(principal);
+        List<Order> orders = new ArrayList<>();
+        if(field1 != null) {
+            if(ascDesc == null) orders.add(new Order(Direction.ASC, field1));
+            else if(ascDesc.equals("DESC")) orders.add(new Order(Direction.DESC, field1));
+            else orders.add(new Order(Direction.ASC, field1));
+        }
         List<Laptop> laptops;
-        if(person.getRoles().contains(Role.ROLE_ADMIN)) laptops = laptopService.listLaptopAdmin(title,categoryName);
-        else laptops = laptopService.listLaptopUser(title,categoryName);
+        laptops = laptopService.listLaptopAdmin(title,categoryName,orders);
 
         model.addAttribute("laptops",laptops);
         model.addAttribute("person",person);
@@ -44,8 +55,11 @@ public class LaptopController {
 
     @GetMapping("/laptop/view/{id}")
     public String laptopInfo(@ModelAttribute("review") Review review, @PathVariable Long id, Model model, Principal principal) {
+        Person person = peopleService.getUserByPrincipal(principal);
         Laptop laptop = laptopService.getLaptopById(id);
-        model.addAttribute("person", peopleService.getUserByPrincipal(principal));
+        boolean haveReview = reviewService.isPersonHaveReview(person,laptop);
+        model.addAttribute("person", person);
+        model.addAttribute("haveReview", haveReview);
         model.addAttribute("laptop", laptop);
         return "laptops/laptop-info";
     }
@@ -57,18 +71,26 @@ public class LaptopController {
         return "redirect:/";
     }
 
-    @PostMapping("laptop/make-review/{id}")
+    @PostMapping("/laptop/make-review/{id}")
     public String makeReview(@PathVariable Long id, @ModelAttribute("review") Review review1, Principal principal){
         Review review = new Review();
         review.setPerson(peopleService.getUserByPrincipal(principal));
         review.setText(review1.getText());
+        review.setScore(review1.getScore());
         reviewService.save(review);
         Laptop laptop = laptopService.getLaptopById(id);
         List<Review> reviews = laptop.getReviews();
         reviews.add(review);
         laptop.setReviews(reviews);
         laptopService.save(laptop);
+        laptopService.setAverageScore(laptop);
         return "redirect:/laptop/view/" + id;
+    }
+
+    @PostMapping("/laptop/{laptop_id}/review/{id}/delete")
+    public String deleteReview(@PathVariable("id") Long id,@PathVariable("laptop_id") Long laptop_id){
+        reviewService.delete(reviewService.findById(id));
+        return "redirect:/laptop/view/" + laptop_id;
     }
 
 

@@ -3,20 +3,23 @@ package com.example.tho.LaptopShop.repositories;
 import com.example.tho.LaptopShop.models.Category;
 import com.example.tho.LaptopShop.models.Laptop;
 import com.example.tho.LaptopShop.models.Person;
+import com.example.tho.LaptopShop.models.Review;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.List;
 
 public interface LaptopRepository extends JpaRepository<Laptop, Long> {
-    List<Laptop> findAllByAmountGreaterThan(int amount);
+
+    List<Laptop> findAll(Sort sort);
+
+    List<Laptop> findAllByModelContains(String title, Sort sort);
+    List<Laptop> findAllByModelContainsAndCategoriesContains(String title, Category category, Sort sort);
+    List<Laptop> findAllByCategoriesContains(Category category, Sort sort);
+    List<Laptop> findAllByReviewsContaining(Review review, Sort sort);
 
     List<Laptop> findAllByModelContains(String title);
-    List<Laptop> findAllByModelContainsAndAmountGreaterThan(String title, int amount);
-
     List<Laptop> findAllByModelContainsAndCategoriesContains(String title, Category category);
-    List<Laptop> findAllByModelContainsAndAmountGreaterThanAndCategoriesContains(String title, int amount, Category category);
-
-
     List<Laptop> findAllByCategoriesContains(Category category);
-    List<Laptop> findAllByCategoriesContainsAndAmountGreaterThan(Category category,int amount);
+    List<Laptop> findAllByReviewsContaining(Review review);
 }

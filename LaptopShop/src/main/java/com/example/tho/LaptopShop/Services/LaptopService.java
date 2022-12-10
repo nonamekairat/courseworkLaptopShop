@@ -3,10 +3,12 @@ package com.example.tho.LaptopShop.Services;
 
 import com.example.tho.LaptopShop.models.Category;
 import com.example.tho.LaptopShop.models.Laptop;
+import com.example.tho.LaptopShop.models.Review;
 import com.example.tho.LaptopShop.repositories.CategoryRepository;
 import com.example.tho.LaptopShop.repositories.LaptopRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,30 +26,8 @@ public class LaptopService {
     private final LaptopRepository laptopRepository;
     private final CategoryRepository categoryRepository;
 
+    public List<Laptop> listLaptopAdmin(String title, String categoryName, List<Sort.Order> orders){
 
-    public List<Laptop> listLaptopUser(String title,String categoryName){
-//        if(categoryName.equals("category")) categoryName = null;
-        Category category = null;
-        if(categoryName != null) {
-            if(!categoryName.equals("category")){
-                category = categoryRepository.findByName(categoryName);
-            }
-        }
-
-        if(title != null && category != null){
-            return laptopRepository.findAllByModelContainsAndAmountGreaterThanAndCategoriesContains(title, 0,category);
-        }
-        else if(title != null){
-            return laptopRepository.findAllByModelContainsAndAmountGreaterThan(title, 0);
-        }
-        else if(category != null){
-            return laptopRepository.findAllByCategoriesContainsAndAmountGreaterThan(category, 0);
-        }
-        else {
-            return laptopRepository.findAllByAmountGreaterThan(0);
-        }
-    }
-    public List<Laptop> listLaptopAdmin(String title,String categoryName){
         Category category = null;
         if(categoryName != null) {
             if(!categoryName.equals("category")){
@@ -55,16 +35,16 @@ public class LaptopService {
             }
         }
         if(title != null && category != null){
-            return laptopRepository.findAllByModelContainsAndCategoriesContains(title, category);
+            return laptopRepository.findAllByModelContainsAndCategoriesContains(title, category,Sort.by(orders));
         }
         else if(title != null){
-            return laptopRepository.findAllByModelContains(title);
+            return laptopRepository.findAllByModelContains(title,Sort.by(orders));
         }
         else if(category != null){
-            return laptopRepository.findAllByCategoriesContains(category);
+            return laptopRepository.findAllByCategoriesContains(category,Sort.by(orders));
         }
         else {
-            return laptopRepository.findAll();
+            return laptopRepository.findAll(Sort.by(orders));
         }
 
 //
@@ -128,5 +108,10 @@ public class LaptopService {
         save(laptop);
     }
 
+
+    public void setAverageScore(Laptop laptop){
+        laptop.setScore(laptop.getReviews().stream().mapToDouble(Review::getScore).average().getAsDouble());
+        laptopRepository.save(laptop);
+    }
 
 }

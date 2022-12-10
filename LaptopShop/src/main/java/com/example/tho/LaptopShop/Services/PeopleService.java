@@ -113,7 +113,7 @@ public class PeopleService {
         oldPerson.setPhoneNumber(person.getPhoneNumber());
 
         if(!file.isEmpty() && file.getSize() > 0){
-            System.out.println("File not null");
+//            System.out.println("File not null");
             File uploadDir = new File(uploadPath);
             if(!uploadDir.exists())
                 uploadDir.mkdir();
@@ -126,7 +126,7 @@ public class PeopleService {
             oldPerson.setAvatar(image);
         }
         peopleRepository.save(oldPerson);
-        
+
         Collection<SimpleGrantedAuthority> nowAuthorities =
                 (Collection<SimpleGrantedAuthority>) SecurityContextHolder.getContext()
                         .getAuthentication()

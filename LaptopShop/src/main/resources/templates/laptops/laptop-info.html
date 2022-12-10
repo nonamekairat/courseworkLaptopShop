@@ -42,6 +42,10 @@
                             <th>Price</th>
                             <td th:text="${laptop.price}">Price</td>
                         </tr>
+                        <tr>
+                            <th>Score</th>
+                            <td th:text="${laptop.score}">Score</td>
+                        </tr>
 
                         <tbody/>
                     </table>
@@ -70,14 +74,28 @@
             </div>
             <div class="row">
                 <div class="col-12 mb-3" th:each="review: ${laptop.reviews}">
-                    <p th:text="${review.person.username}" class="mb-3 fw-bold"></p>
+                    <div class="d-flex p-3">
+                        <p th:text="${review.person.username}" class="fw-bold"></p>
+                        <p class="px-3" th:text="${review.score}"></p>
+                        <form th:if="${person.username == review.person.username}" th:method="POST" th:action="@{/laptop/{laptop_id}/review/{id}/delete (id=${review.id},laptop_id=${laptop.id})}">
+                            <button class="btn btn-primary profile-button" type="submit">delete</button>
+                        </form>
+                    </div>
+
                     <div class="" width="50%">
                         <p th:text="${review.text}" ></p>
                     </div>
                 </div>
 
-                <div class="col-12">
+                <div class="col-12" th:if="${!haveReview}" sec:authorize="authenticated">
                     <form th:method="POST" th:action="@{/laptop/make-review/{id} (id=${laptop.id})}" th:object="${review}">
+                        <select th:field="*{score}" id="">
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
+                        </select>
                         <textarea th:field="*{text}" class="form-control mb-3" id="description" placeholder="leave your review about this notebook" th:value="${review.text}"  rows="5" cols="60"></textarea>
                         <button class="btn btn-primary profile-button" type="submit">post</button>
                 </form>

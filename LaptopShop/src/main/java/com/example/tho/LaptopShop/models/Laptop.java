@@ -30,6 +30,7 @@ public class Laptop {
     private String model;
     private int price;
     private int amount;
+    private double score;
 
     @CreationTimestamp
     private LocalDateTime dateOfCreated;

@@ -4,8 +4,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Template</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <link href="/resources/css/style.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
+
+
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials.min.js"></script>
+
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials.css" />
+    <link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/jquery.jssocials/1.4.0/jssocials-theme-classic.css" />
+
+    <link rel="stylesheet" href="/resources/css/font-awesome.min.css">
+
+
 </head>
 <body>
 <header th:include="blocks/fragments.html :: header" th:with="person=${person}"></header>
@@ -87,6 +98,16 @@
                                     <button class="btn btn-primary profile-button" type="submit">notify</button></div>
                             </form>
                         </div>
+                    </div>
+                    <div class="d-flex flex-row-reverse">
+                        <div class="p-2" id="share"></div>
+
+                        <script>
+                            $("#share").jsSocials({
+                                text: "Hello, check out this Laptop",
+                                shares: [ "twitter", "linkedin", "pinterest"]
+                            });
+                        </script>
 
                     </div>
 
@@ -95,8 +116,10 @@
 
             </div>
             <div class="row">
+                <h3 class="my-5">Reviews</h3>
                 <div class="col-12 mb-3" th:each="review: ${laptop.reviews}">
                     <div class="d-flex p-3">
+                        <img th:src="${person.avatar != null} ? person.avatar : '/resources/avatar.png'" class="rounded-circle me-3" width="40px" height="40px"/>
                         <p th:text="${review.person.username}" class="fw-bold"></p>
                         <p class="px-3" th:text="${review.score}"></p>
                         <form th:if="${person.username == review.person.username}" th:method="POST" th:action="@{/laptop/{laptop_id}/review/{id}/delete (id=${review.id},laptop_id=${laptop.id})}">
@@ -104,22 +127,27 @@
                         </form>
                     </div>
 
-                    <div class="" width="50%">
+                    <div class="w-50">
                         <p th:text="${review.text}" ></p>
                     </div>
                 </div>
 
-                <div class="col-12" th:if="${!haveReview}" sec:authorize="authenticated">
+                <div class="col-6 mt-5" th:if="${!haveReview}" sec:authorize="authenticated">
                     <form th:method="POST" th:action="@{/laptop/make-review/{id} (id=${laptop.id})}" th:object="${review}">
-                        <select th:field="*{score}" id="">
-                            <option value="1">1</option>
-                            <option value="2">2</option>
-                            <option value="3">3</option>
-                            <option value="4">4</option>
-                            <option value="5">5</option>
-                        </select>
+
                         <textarea th:field="*{text}" class="form-control mb-3" id="description" placeholder="leave your review about this notebook" th:value="${review.text}"  rows="5" cols="60"></textarea>
-                        <button class="btn btn-primary profile-button" type="submit">post</button>
+
+                        <div class="d-flex">
+                            <button class="btn btn-primary profile-button pe-3" type="submit">post</button>
+                            <select th:field="*{score}" id="">
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                            </select>
+                        </div>
+
                 </form>
                 </div>
 
@@ -132,6 +160,8 @@
 
 
 <footer th:replace="blocks/fragments.html :: footer"></footer>
+
+
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 

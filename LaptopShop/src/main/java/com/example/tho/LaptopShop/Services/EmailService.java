@@ -31,7 +31,7 @@ public class EmailService {
         helper.setFrom("nonamekairat@gmail.com");
         helper.setTo(emailMessage.getTo());
         helper.setSubject(emailMessage.getSubject());
-        helper.setText(emailMessage.getMessage());
+        helper.setText(emailMessage.getMessage(),true);
         javaMailSender.send(message);
     }
 

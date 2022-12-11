@@ -27,6 +27,8 @@ public class FavoritesService {
         if(laptops == null) laptops = new ArrayList<>();
         laptops.add(laptop);
         favorites.setLaptops(laptops);
+        favorites.setUser(person);
+        favoritesRepository.save(favorites);
         person.setFavorites(favorites);
         peopleRepository.save(person);
     }

@@ -17,29 +17,29 @@
             <div class="row mb-3">
 
                 <div class="col-6 d-flex pe-3">
-                    <div class="form-check">
+                    <div class="form-check pe-3">
                         <input class="form-check-input" type="radio" name="field1" id="flexRadioDefault1" value="price">
                         <label class="form-check-label" for="flexRadioDefault1"> Price
                         </label>
                     </div>
-                    <div class="form-check">
+                    <div class="form-check pe-3">
                         <input class="form-check-input" type="radio" name="field1" id="flexRadioDefault2" value="model">
                         <label class="form-check-label" for="flexRadioDefault2"> Model
                         </label>
                     </div>
-                    <div class="form-check">
+                    <div class="form-check pe-3">
                         <input class="form-check-input" type="radio" name="field1" id="flexRadioDefault3" value="score">
                         <label class="form-check-label" for="flexRadioDefault3"> Score
                         </label>
                     </div>
                 </div>
                 <div class="col-4 d-flex">
-                    <div class="form-check">
+                    <div class="form-check pe-3">
                         <input class="form-check-input" type="radio" name="field2" id="flexRadioDefault4" value="ASC">
                         <label class="form-check-label" for="flexRadioDefault4"> Ascending
                         </label>
                     </div>
-                    <div class="form-check">
+                    <div class="form-check pe-3">
                         <input class="form-check-input" type="radio" name="field2" id="flexRadioDefault5" value="DESC">
                         <label class="form-check-label" for="flexRadioDefault5"> Descending
                         </label>
@@ -49,11 +49,11 @@
             <div class="row mb-3">
                 <div class="col-12">
                         <div class="d-flex">
-                            <select name="category" id="category" class="form-select" aria-label="Default select example">
+                            <select name="category" id="category" class="form-select w-25" aria-label="Default select example">
                                 <option selected>category</option>
                                 <option th:value="${category.name}" th:text="${category.name}" th:each="category: ${categories}"></option>
                             </select>
-                            <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name="searchWord">
+                            <input class="form-control me-2 w-75" type="text" placeholder="Search" aria-label="Search" name="searchWord">
                             <button class="btn btn-outline-success" type="submit">Search</button>
                         </div>
                 </div>
@@ -68,7 +68,12 @@
                         <div class="card-body">
                             <h5 class="card-title" th:text="${laptop.title}">Card title</h5>
                             <p class="card-text text-truncate" th:text="${laptop.model}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-                            <a class="btn btn-primary" th:href="@{/laptop/view/{id}(id=${laptop.id})}">View</a>
+
+                            <div class="d-flex justify-content-between">
+                                <a class="btn btn-primary" th:href="@{/laptop/view/{id}(id=${laptop.id})}">View</a>
+                                <p th:text="${laptop.price}"></p>
+                            </div>
+
                         </div>
                     </div>
                 </div>

@@ -19,7 +19,9 @@ public class Favorites {
     @JoinColumn(name = "user_id")
     private Person user;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "laptop_id")
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "favorites_laptops",
+            joinColumns = @JoinColumn(name="user_id"),
+            inverseJoinColumns = @JoinColumn(name = "laptop_id"))
     private List<Laptop> laptops;
 }

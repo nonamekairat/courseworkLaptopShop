@@ -86,10 +86,18 @@ public class OrderService {
         create(order);
 
         // remake
+        String content = "<p>Hello,</p>"
+                + "<p>You have ordered Laptop.</p>"
+                + "<p>Click the link below to see your laptop progress:</p>"
+                + "<p><a href=\"" + "http://localhost:8080/profile/" + "\">view orders</a></p>"
+                + "<br>";
         EmailMessage emailMessage = new EmailMessage();
         emailMessage.setTo(person.getEmail());
         emailMessage.setSubject("Order laptop");
-        emailMessage.setMessage("Something about Order");
+        emailMessage.setMessage(content);
+
+
+
         emailService.sendMail(emailMessage);
     }
 }

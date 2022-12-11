@@ -14,14 +14,14 @@
   <div id="content-wrap">
     <section class="vh-100">
       <div class="container py-5 px-5 h-100 bg-login">
-        <div class="row d-flex align-items-center justify-content-center h-100">
+        <div class="row d-flex align-items-start justify-content-center h-100">
           <div class="col-md-6 col-lg-5 col-xl-4">
             <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg"
                  class="img-fluid" alt="Phone image">
           </div>
           <div class="col-md-6 col-lg-4 col-xl-4 offset-xl-1">
-            <div>
-              <p>We will be sending a reset password link to your email.</p>
+            <div class="mb-4">
+              <h3>We will be sending a reset password link to your email.</h3>
               </div>
             <form th:method="POST" th:action="@{/forgot_password}">
               <label class="form-label" for="email">Email</label>

@@ -32,6 +32,7 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Person person;
+
     private BigDecimal sum;
     @Column(name = "phone_number")
     private String phoneNumber;

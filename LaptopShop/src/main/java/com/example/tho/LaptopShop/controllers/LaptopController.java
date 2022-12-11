@@ -30,6 +30,8 @@ public class LaptopController {
     private final PeopleService peopleService;
     private final CategoryService categoryService;
     private final ReviewService reviewService;
+    private final FavoritesService favoritesService;
+    private final NotificationService notificationService;
 
     @GetMapping("/")
     public String startPage(@RequestParam(name = "searchWord",required = false) String title,
@@ -58,8 +60,10 @@ public class LaptopController {
         Person person = peopleService.getUserByPrincipal(principal);
         Laptop laptop = laptopService.getLaptopById(id);
         boolean haveReview = reviewService.isPersonHaveReview(person,laptop);
+        boolean haveInFavorites = favoritesService.isPersonHaveInFavorites(person,laptop);
         model.addAttribute("person", person);
         model.addAttribute("haveReview", haveReview);
+        model.addAttribute("haveInFavorites", haveInFavorites);
         model.addAttribute("laptop", laptop);
         return "laptops/laptop-info";
     }
@@ -91,6 +95,41 @@ public class LaptopController {
     public String deleteReview(@PathVariable("id") Long id,@PathVariable("laptop_id") Long laptop_id){
         reviewService.delete(reviewService.findById(id));
         return "redirect:/laptop/view/" + laptop_id;
+    }
+
+    @PostMapping("/laptop/view/{id}/make-favorite")
+    public String makeFavorite(@PathVariable Long id, Principal principal){
+        Laptop laptop = laptopService.getLaptopById(id);
+        Person person = peopleService.getUserByPrincipal(principal);
+        favoritesService.save(laptop,person);
+        return "redirect:/laptop/view/" + id;
+    }
+
+    @PostMapping("/laptop/view/{id}/notification")
+    public String notificationCreate(@PathVariable Long id, Principal principal){
+        Laptop laptop = laptopService.getLaptopById(id);
+        Person person = peopleService.getUserByPrincipal(principal);
+        notificationService.save(laptop,person);
+        return "redirect:/laptop/view/" + id;
+    }
+
+    @PostMapping("/laptop/view/{id}/remove-favorite")
+    public String removeFavorite(@PathVariable Long id, Principal principal){
+        Laptop laptop = laptopService.getLaptopById(id);
+        Person person = peopleService.getUserByPrincipal(principal);
+        favoritesService.remove(laptop,person);
+        return "redirect:/laptop/view/" + id;
+    }
+
+    @GetMapping("/laptop/favorites")
+    public String viewFavorites(Principal principal, Model model){
+        Person person = peopleService.getUserByPrincipal(principal);
+        favoritesService.createfavorites(person);
+        Favorites favorites = person.getFavorites();
+        model.addAttribute("person", person);
+        model.addAttribute("favorites",favorites);
+        return "laptops/favorite-laptops";
+
     }
 
 

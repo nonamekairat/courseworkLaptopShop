@@ -1,11 +1,11 @@
 package com.example.tho.LaptopShop.Services;
 
 
-import com.example.tho.LaptopShop.models.Category;
-import com.example.tho.LaptopShop.models.Laptop;
-import com.example.tho.LaptopShop.models.Review;
+import com.example.tho.LaptopShop.models.*;
 import com.example.tho.LaptopShop.repositories.CategoryRepository;
 import com.example.tho.LaptopShop.repositories.LaptopRepository;
+import com.example.tho.LaptopShop.repositories.NotificationRepository;
+import com.example.tho.LaptopShop.repositories.PeopleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Sort;
@@ -25,6 +25,8 @@ public class LaptopService {
     private String uploadPath;
     private final LaptopRepository laptopRepository;
     private final CategoryRepository categoryRepository;
+    private final NotificationRepository notificationRepository;
+    private final PeopleRepository peopleRepository;
 
     public List<Laptop> listLaptopAdmin(String title, String categoryName, List<Sort.Order> orders){
 
@@ -47,15 +49,6 @@ public class LaptopService {
             return laptopRepository.findAll(Sort.by(orders));
         }
 
-//
-//        if(title != null) return laptopRepository.findAllByModelContains(title)
-//                .stream()
-////                .filter(laptop -> laptop.getAmount() > 0)
-//                .toList();
-//        return laptopRepository.findAll()
-//                .stream()
-////                .filter(laptop -> laptop.getAmount() > 0)
-//                .toList();
     }
 //
 //    public boolean checkLaptopIsEnough(List<Laptop> laptops){
@@ -68,7 +61,7 @@ public class LaptopService {
 
     public void save(Laptop laptop, MultipartFile file, String... categoryNames) throws IOException {
 
-
+        if(laptop.getImageName().equals("")) laptop.setImageName(null);
         List<Category> categories = Arrays.stream(categoryNames).collect(Collectors.toSet()).stream()
                 .filter(Objects::nonNull).map(categoryRepository::findByName).toList();
         laptop.setCategories(categories);
@@ -83,8 +76,20 @@ public class LaptopService {
             file.transferTo(new File(uploadPath + "/" + resultFilename));
             laptop.setImageName(resultFilename);
         }
-
         laptopRepository.save(laptop);
+
+        List<Notification> notifications = notificationRepository.findAllByLaptop(laptop);
+
+        for (Notification notification : notifications) {
+            if (notification.getLaptop().getAmount() > 0) {
+                notification.setLaptopUpdate(true);
+                Person person = notification.getPerson();
+                person.setNotificationCount(person.getNotificationCount() + 1);
+                peopleRepository.save(person);
+                notificationRepository.save(notification);
+            }
+        }
+
     }
     public void save(Laptop laptop){
         laptopRepository.save(laptop);

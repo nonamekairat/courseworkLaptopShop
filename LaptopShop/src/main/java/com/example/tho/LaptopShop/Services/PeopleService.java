@@ -176,11 +176,15 @@ public class PeopleService {
     }
 
     public void updatePassword(Person person, String newPassword) {
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encodedPassword = passwordEncoder.encode(newPassword);
-        person.setPassword(encodedPassword);
-
+        person.setPassword(passwordEncoder.encode(newPassword));
         person.setResetPasswordToken(null);
+        peopleRepository.save(person);
+    }
+
+    public void registerAdmin(Person person) {
+        person.setPassword(passwordEncoder.encode(person.getPassword()));
+        person.getRoles().add(Role.ROLE_ADMIN);
+        person.setActive(true);
         peopleRepository.save(person);
     }
 }

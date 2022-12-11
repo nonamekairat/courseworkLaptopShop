@@ -30,8 +30,21 @@
                         <a class="nav-link active mt-auto mb-auto" aria-current="page" href="/bucket">Bucket</a>
                     </li>
 
+                    <li class="nav-item" sec:authorize="authenticated">
+                        <a class="nav-link active mt-auto mb-auto" href="/laptop/favorites">Favorites</a>
+                    </li>
+
+                    <li class="nav-item" sec:authorize="authenticated">
+<!--                        replace with some icon-->
+                        <a th:if="${person.notificationCount} > 0" th:text="${person.notificationCount} + ' ' + Notifications" class="nav-link active mt-auto mb-auto" href="/notifications"></a>
+                    </li>
+
                     <li class="nav-item" sec:authorize="hasAuthority('ROLE_ADMIN')">
                         <a class="nav-link active mt-auto mb-auto" aria-current="page" href="/laptop/create">new Laptop</a>
+                    </li>
+
+                    <li class="nav-item" sec:authorize="hasAuthority('ROLE_ADMIN')">
+                        <a class="nav-link active mt-auto mb-auto" aria-current="page" href="/admin/registration">new Admin</a>
                     </li>
                     <li class="nav-item" sec:authorize="hasAuthority('ROLE_ADMIN')">
                         <a class="nav-link active mt-auto mb-auto" aria-current="page" href="/order/view">view Orders</a>
@@ -47,6 +60,8 @@
                     <li class="nav-item" sec:authorize="!isAuthenticated()">
                         <a class="nav-link" href="/auth/login">Login</a>
                     </li>
+
+
                     <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
                         <a href="/profile" class="nav-link"  th:if="${person.avatar} == null"
                            id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"

@@ -9,13 +9,17 @@ import com.example.tho.LaptopShop.models.Category;
 import com.example.tho.LaptopShop.models.Laptop;
 import com.example.tho.LaptopShop.models.Person;
 import com.example.tho.LaptopShop.models.enums.OrderStatus;
+import com.example.tho.LaptopShop.util.PersonValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.Arrays;
@@ -29,6 +33,7 @@ public class AdminController {
     private final LaptopService laptopService;
     private final OrderService orderService;
     private final CategoryService categoryService;
+    private final PersonValidator personValidator;
 
 
     @GetMapping("/order/view")
@@ -155,5 +160,23 @@ public class AdminController {
                                       @RequestParam("category-add") String name){
         laptopService.addCategory(laptopId,name);
         return "redirect:/laptop/edit/" + laptopId;
+    }
+
+    @GetMapping("admin/registration")
+    public String adminRegistrationPage(@ModelAttribute("person") Person person, Principal principal, Model model){
+        model.addAttribute("person",peopleService.getUserByPrincipal(principal));
+        return "admin/create-admin";
+    }
+
+    @PostMapping("admin/registration")
+    public String performAdminRegistration(@ModelAttribute("person") @Valid Person person,
+                                      BindingResult bindingResult){
+        personValidator.validate(person, bindingResult);
+
+        if(bindingResult.hasErrors())
+            return "admin/create-admin";
+
+        peopleService.registerAdmin(person);
+        return "redirect:/";
     }
 }

@@ -99,6 +99,7 @@ public class ForgotPasswordController {
             return "message";
         } else {
             peopleService.updatePassword(person, password);
+            System.out.println(password);
 
             model.addAttribute("message", "You have successfully changed your password.");
         }

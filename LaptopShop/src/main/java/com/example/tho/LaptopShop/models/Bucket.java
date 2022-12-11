@@ -30,6 +30,9 @@ public class Bucket {
         laptops.removeAll(laptops);
     }
 
+    public String getSum(){
+        return  "Sum: " + laptops.stream().mapToDouble(Laptop::getPrice).sum();
+    }
 
 
 

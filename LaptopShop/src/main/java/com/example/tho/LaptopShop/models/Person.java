@@ -44,6 +44,8 @@ public class Person {
     private String name;
     private String lastname;
 
+    private int notificationCount;
+
 
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role",
@@ -63,12 +65,6 @@ public class Person {
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "favorites_id")
     private Favorites favorites;
-
-//    @ManyToMany(cascade = CascadeType.ALL)
-//    @JoinTable(name = "favorite_laptops",
-//            joinColumns = @JoinColumn(name="user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "laptop_id"))
-//    private List<Laptop> favoriteLaptops;
 
     @Column(name = "reset_password_token")
     private String resetPasswordToken;

@@ -1,5 +1,6 @@
 package com.example.tho.LaptopShop.repositories;
 
+import com.example.tho.LaptopShop.models.Laptop;
 import com.example.tho.LaptopShop.models.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 
@@ -10,4 +11,6 @@ public interface PeopleRepository extends JpaRepository<Person, Long> {
     Person findByEmail(String mail);
     void deletePersonById(Long id);
     Person findByResetPasswordToken(String token);
+
+
 }

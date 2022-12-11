@@ -17,11 +17,11 @@
     <div class="container rounded bg-white mt-5 mb-5">
       <div class="row">
         <div class="col-md-3 border-right ">
-          <div class="d-flex flex-column align-items-center text-center p-3 py-5" th:if="${person.avatar} == null">
+          <div class="d-flex flex-column align-items-center text-center p-3 py-5" th:if="${user.avatar} == null">
             <img class="rounded-circle mt-5 img-cub" width="150px" height="150px" src="/resources/avatar.png"><span class="font-weight-bold" th:text="${person.username}">Edogaru</span><span class="text-black-50" th:text="${person.email}">edogaru@mail.com.my</span><span> </span>
           </div>
-          <div class="d-flex flex-column align-items-center text-center p-3 py-5" th:if="${person.avatar} != null">
-            <img class="rounded-circle mt-5 img-cub" width="150px" height="150px" th:src="${person.avatar}"><span class="font-weight-bold" th:text="${person.username}">Edogaru</span><span class="text-black-50" th:text="${person.email}">edogaru@mail.com.my</span><span> </span>
+          <div class="d-flex flex-column align-items-center text-center p-3 py-5" th:if="${user.avatar} != null">
+            <img class="rounded-circle mt-5 img-cub" width="150px" height="150px" th:src="${user.avatar}"><span class="font-weight-bold" th:text="${person.username}">Edogaru</span><span class="text-black-50" th:text="${person.email}">edogaru@mail.com.my</span><span> </span>
 
           </div>
         </div>

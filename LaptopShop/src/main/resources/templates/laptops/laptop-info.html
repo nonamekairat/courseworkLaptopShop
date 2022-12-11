@@ -18,6 +18,7 @@
                 <div class="col-4">
                     <img th:if="${laptop.imageName} != null" th:src="${laptop}" class="img-fluid"/>
                     <img th:if="${laptop.imageName} == null" src="/resources/img-laptop.png" class="img-fluid"/>
+                    <p th:if="${haveInFavorites}">This product is one of your favorites</p>
                 </div>
                 <div class="col-8">
                     <table class="table">
@@ -59,10 +60,31 @@
                         </div>
 
                         <div class="p-2">
-                            <form th:method="POST" th:action="@{/laptop/add-to-bucket/{id}(id=${laptop.id})}">
+                            <form th:method="POST" th:action="@{/laptop/add-to-bucket/{id}(id=${laptop.id})}" th:if="${laptop.amount} > 0">
                                 <!--                        <input type="hidden" th:if="${bucket.id} != null " th:field="${id}" th:value="${bucket.id}"/>-->
                                 <div class="mt-5 text-center">
                                     <button class="btn btn-primary profile-button" type="submit">add to Bucket</button></div>
+                            </form>
+                        </div>
+                        <div class="p-2" sec:authorize="authenticated" th:if="${!haveInFavorites}">
+                            <form th:method="POST" th:action="@{/laptop/view/{id}/make-favorite(id=${laptop.id})}">
+                                <!--                        <input type="hidden" th:if="${bucket.id} != null " th:field="${id}" th:value="${bucket.id}"/>-->
+                                <div class="mt-5 text-center">
+                                    <button class="btn btn-primary profile-button" type="submit">add to Favorites</button></div>
+                            </form>
+                        </div>
+                        <div class="p-2" sec:authorize="authenticated" th:if="${haveInFavorites}">
+                            <form th:method="POST" th:action="@{/laptop/view/{id}/remove-favorite(id=${laptop.id})}">
+                                <!--                        <input type="hidden" th:if="${bucket.id} != null " th:field="${id}" th:value="${bucket.id}"/>-->
+                                <div class="mt-5 text-center">
+                                    <button class="btn btn-primary profile-button" type="submit">remove from Favorites</button></div>
+                            </form>
+                        </div>
+                        <div class="p-2" sec:authorize="authenticated" th:if="${laptop.amount} == 0">
+                            <form th:method="POST" th:action="@{/laptop/view/{id}/notification(id=${laptop.id})}">
+                                <!--                        <input type="hidden" th:if="${bucket.id} != null " th:field="${id}" th:value="${bucket.id}"/>-->
+                                <div class="mt-5 text-center">
+                                    <button class="btn btn-primary profile-button" type="submit">notify</button></div>
                             </form>
                         </div>
 

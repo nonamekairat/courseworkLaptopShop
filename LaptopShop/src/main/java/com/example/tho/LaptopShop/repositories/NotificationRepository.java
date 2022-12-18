@@ -14,4 +14,9 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
     List<Notification> findAllByLaptop(Laptop laptop);
 
     Optional<Notification> findByLaptopAndPerson(Laptop laptop, Person person);
+
+    void deleteByPerson(Person person);
+
+//    void deleteAllByLaptop(Laptop laptop);
+    void deleteAllByLaptop(Laptop laptop);
 }

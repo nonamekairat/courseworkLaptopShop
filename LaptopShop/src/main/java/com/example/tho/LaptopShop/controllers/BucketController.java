@@ -44,6 +44,7 @@ public class BucketController {
         model.addAttribute("bucket",person.getBucket());
         model.addAttribute("paymentTypes", Arrays.stream(PaymentType.values()).toList());
         model.addAttribute("deliveryTypes", Arrays.stream(DeliveryType.values()).toList());
+        model.addAttribute("laptops",person.getBucket().getLaptops());
         return "bucket/bucket-view";
     }
     @PostMapping("/bucket/clear")

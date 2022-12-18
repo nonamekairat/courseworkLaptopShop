@@ -45,7 +45,7 @@
                             </div>
                             <div class="row mt-3">
                                 <div class="col-md-12 mb-4"><label for="description" class="labels"> Description </label>
-                                    <input type="text" th:field="*{description}"  class="form-control" id="description" value="" placeholder="description" >
+                                    <textarea th:field="*{description}" class="form-control" id="description" placeholder="description" rows="5" cols="60"></textarea>
                                     <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}">Email Error</div>
 
                                 </div>
@@ -60,15 +60,15 @@
                                     <div style="color:red" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}">amount Error</div>
                                 </div>
 
-                                <select name="category1" id="category1" class="form-select" aria-label="Default select example">
+                                <select name="category1" id="category1" class="form-select mb-3" aria-label="Default select example">
                                     <option selected>category</option>
                                     <option th:value="${category.name}" th:text="${category.name}" th:each="category: ${categories}"></option>
                                 </select>
-                                <select name="category2" id="category2" class="form-select" aria-label="Default select example">
+                                <select name="category2" id="category2" class="form-select mb-3" aria-label="Default select example">
                                     <option selected>category</option>
                                     <option th:value="${category.name}" th:text="${category.name}" th:each="category: ${categories}"></option>
                                 </select>
-                                <select name="category3" id="category3" class="form-select" aria-label="Default select example">
+                                <select name="category3" id="category3" class="form-select mb-3" aria-label="Default select example">
                                     <option selected>category</option>
                                     <option th:value="${category.name}" th:text="${category.name}" th:each="category: ${categories}"></option>
                                 </select>

@@ -4,6 +4,8 @@ package com.example.tho.LaptopShop.models;
 import lombok.Data;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -31,6 +33,8 @@ public class Laptop {
     private int price;
     private int amount;
     private double score;
+    private boolean visible;
+
 
     @CreationTimestamp
     private LocalDateTime dateOfCreated;
@@ -41,8 +45,13 @@ public class Laptop {
             inverseJoinColumns = @JoinColumn(name = "category_id"))
     private List<Category> categories;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Review> reviews;
+
+    public void removeReview(Review review) {
+        reviews.remove(review);
+        review.setLaptop(null);
+    }
 
     @Override
     public String toString() {

@@ -5,6 +5,7 @@ import com.example.tho.LaptopShop.Services.NotificationService;
 import com.example.tho.LaptopShop.Services.OrderService;
 import com.example.tho.LaptopShop.Services.PeopleService;
 import com.example.tho.LaptopShop.models.Notification;
+import com.example.tho.LaptopShop.models.Order;
 import com.example.tho.LaptopShop.models.Person;
 import com.example.tho.LaptopShop.repositories.PeopleRepository;
 import com.example.tho.LaptopShop.util.PersonValidator;
@@ -49,8 +50,10 @@ public class UserController {
     @PreAuthorize("#username == authentication.name")
     @GetMapping("/profile/order/{username}/{id}")
     public String orderInfo(@PathVariable Long id,@PathVariable("username") String username, Principal principal, Model model) {
+        Order order = orderService.getOrderById(id);
         model.addAttribute("person",peopleService.getUserByPrincipal(principal));
-        model.addAttribute("order",orderService.getOrderById(id));
+        model.addAttribute("order",order);
+        model.addAttribute("laptops",orderService.laptopList(order));
         return "orders/order-info";
     }
 
@@ -72,6 +75,7 @@ public class UserController {
         List<Notification> notifications = notificationService.getUpdatedNotificationsByPerson(person);
         model.addAttribute("person",person);
         model.addAttribute("notifications",notifications);
+        model.addAttribute("laptops",notificationService.notificationsToLaptops(notifications));
         return "users/notifications";
     }
 

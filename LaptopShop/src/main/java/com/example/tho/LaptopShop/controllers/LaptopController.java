@@ -77,12 +77,14 @@ public class LaptopController {
 
     @PostMapping("/laptop/make-review/{id}")
     public String makeReview(@PathVariable Long id, @ModelAttribute("review") Review review1, Principal principal){
+        Laptop laptop = laptopService.getLaptopById(id);
         Review review = new Review();
         review.setPerson(peopleService.getUserByPrincipal(principal));
         review.setText(review1.getText());
         review.setScore(review1.getScore());
+        review.setLaptop(laptop);
         reviewService.save(review);
-        Laptop laptop = laptopService.getLaptopById(id);
+
         List<Review> reviews = laptop.getReviews();
         reviews.add(review);
         laptop.setReviews(reviews);
@@ -93,7 +95,9 @@ public class LaptopController {
 
     @PostMapping("/laptop/{laptop_id}/review/{id}/delete")
     public String deleteReview(@PathVariable("id") Long id,@PathVariable("laptop_id") Long laptop_id){
-        reviewService.delete(reviewService.findById(id));
+        Laptop laptop = laptopService.getLaptopById(laptop_id);
+        reviewService.delete(reviewService.findById(id),laptop_id);
+        laptopService.setAverageScore(laptop);
         return "redirect:/laptop/view/" + laptop_id;
     }
 
@@ -127,7 +131,7 @@ public class LaptopController {
         favoritesService.createfavorites(person);
         Favorites favorites = person.getFavorites();
         model.addAttribute("person", person);
-        model.addAttribute("favorites",favorites);
+        model.addAttribute("laptops",favorites.getLaptops());
         return "laptops/favorite-laptops";
 
     }

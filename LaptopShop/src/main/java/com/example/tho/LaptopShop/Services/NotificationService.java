@@ -48,4 +48,8 @@ public class NotificationService {
         peopleRepository.save(person);
         notificationRepository.delete(notification);
     }
+
+    public List<Laptop> notificationsToLaptops(List<Notification> notifications) {
+        return notifications.stream().map(Notification::getLaptop).toList();
+    }
 }

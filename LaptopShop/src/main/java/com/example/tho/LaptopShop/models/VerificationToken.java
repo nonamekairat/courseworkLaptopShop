@@ -2,6 +2,7 @@ package com.example.tho.LaptopShop.models;
 
 
 import lombok.Data;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.sql.Timestamp;

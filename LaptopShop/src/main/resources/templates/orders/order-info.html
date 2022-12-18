@@ -15,12 +15,16 @@
   <div id="content-wrap">
     <div class="container">
       <div class="row">
-        <div class="col-8">
+        <div class="col-8 mb-4">
           <table class="table">
             <tbody>
             <tr>
               <th>Person's Username</th>
               <td th:text="${order.person.username}">Title</td>
+            </tr>
+            <tr>
+              <th>Full Name</th>
+              <td th:text="${order.firstName + ' ' + order.lastName}">Model</td>
             </tr>
             <tr>
               <th>Phone Number</th>
@@ -35,12 +39,20 @@
               <td th:text="${order.description}">Amount</td>
             </tr>
             <tr>
-              <th>Total Cost</th>
+              <th>Total Price</th>
               <td th:text="${order.sum}">Price</td>
             </tr>
             <tr>
               <th>Status</th>
-              <td th:text="${order.status}">Price</td>
+              <td th:text="${order.status}">status</td>
+            </tr>
+            <tr>
+              <th>Delivery Type</th>
+              <td th:text="${order.deliveryType}">delivery type</td>
+            </tr>
+            <tr>
+              <th>Payment Type</th>
+              <td th:text="${order.paymentType}">payment type</td>
             </tr>
             <tbody/>
           </table>
@@ -57,29 +69,11 @@
 
 
         <div class="row justify-content-left">
-          <div th:each="detail: ${order.details}" class="col-3 mb-4">
-            <div  class="card">
-              <img th:if="${detail.laptop.imageName} != null" th:src="${detail.laptop}" class="card-img-top"/>
-              <img th:if="${detail.laptop.imageName} == null" src="/resources/img-laptop.png" class="card-img-top"/>
-              <!--                        <img class="card-img-top" th:src="${laptop}" alt="">-->
-              <div class="card-body">
-                <h5 class="card-title" th:text="${detail.laptop.title}">Card title</h5>
-                <p class="card-text text-truncate" th:text="${detail.laptop.model}">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-              </div>
-            </div>
+          <div class="col-10">
+            <div th:replace="blocks/fragments.html :: div.laptopsView" th:with="laptops=${laptops}"></div>
           </div>
         </div>
-        <div class="d-flex flex-row-reverse">
-<!--          later : complete / drop / return order -->
-<!--          <div class="p-2" sec:authorize="hasAuthority('ROLE_ADMIN')">-->
-<!--            <form th:method="GET" th:action="@{/laptop/edit/{id}(id=${laptop.id})}">-->
-<!--              &lt;!&ndash;                        <input type="hidden" th:if="${bucket.id} != null " th:field="${id}" th:value="${bucket.id}"/>&ndash;&gt;-->
-<!--              <div class="mt-5 text-center">-->
-<!--                <button class="btn btn-primary profile-button" type="submit">complete order</button></div>-->
-<!--            </form>-->
-<!--          </div>-->
 
-        </div>
       </div>
 
     </div>

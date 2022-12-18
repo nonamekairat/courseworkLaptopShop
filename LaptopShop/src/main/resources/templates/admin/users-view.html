@@ -13,6 +13,28 @@
 <div id="page-container">
   <div id="content-wrap">
     <div class="container">
+
+      <div class="row justify-content-left ordersView" id="ordersView">
+        <div th:each="user: ${users}">
+          <div class="col-12 d-flex p-2 bg-light rounded-1 mb-3">
+            <div class="img-crop">
+              <img th:if="${user.avatar} != null" th:src="${user.avatar}" />
+              <img th:if="${user.avatar} == null" src="/resources/avatar.png" />
+            </div>
+            <div class="ps-3 w-75">
+
+              <h5 class="" th:text="${user.getStringRole()}">Card title</h5>
+              <p class="" th:text="${'Full name -' + user.name + ' ' + user.lastname}">Card title</p>
+              <p class="" th:text="${'username -' + user.username}">Card title</p>
+              <p class="" th:text="${'address -' + user.address}">Card title</p>
+              <p class="" th:text="${'Phone Number -' + user.phoneNumber}">Card title</p>
+              <a th:href="@{view/{id}/(id=${user.id})}">Edit</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
       <div class="col-md-6 d-flex flex-column mb-3" th:each="user : ${users}">
         <div class="p-3 py-5">
           <div class="d-flex justify-content-between align-items-center mb-3">

@@ -16,23 +16,52 @@
       <div class="row mb-3">
         <div class="col-12">
           <form class="d-flex">
-            <input class="form-control me-2" type="text" placeholder="Search" aria-label="Search" name="searchWord">
-            <button class="btn btn-outline-success" type="submit">Search</button>
+
+              <select class="form-select" aria-label="Default select example"  name="sort" id="sort" style="width: 300px">
+                <option value="created">Date</option>
+                <option value="sum">Price</option>
+              </select>
+              <div class="px-2">
+                <div class="form-check pe-1">
+                  <input class="form-check-input" type="radio" name="field2" id="flexRadioDefault4" value="ASC">
+                  <label class="form-check-label" for="flexRadioDefault4"> Ascending
+                  </label>
+                </div>
+                <div class="form-check pe-1">
+                  <input class="form-check-input" type="radio" name="field2" id="flexRadioDefault5" value="DESC">
+                  <label class="form-check-label" for="flexRadioDefault5"> Descending
+                  </label>
+                </div>
+              </div>
+
+            <select name="status" id="status" class="form-select" aria-label="Default select example">
+              <option th:value="${status}" th:text="${status}" th:each="status: ${statuses}"></option>
+            </select>
+            <button class="btn btn-outline-success" type="submit">search</button>
+
+
           </form>
         </div>
       </div>
 
-      <div class="row justify-content-left">
-        <div th:each="order: ${orders}" class="col-12 mb-4">
-          <p th:text="${order.person.username}"></p>
-          <p th:text="${order.created}"></p>
-          <p th:text="${order.sum}"></p>
-          <p th:text="${order.address}"></p>
-          <p th:text="${order.description}"></p>
-          <p th:text="${order.person.phoneNumber}"></p>
-          <a th:href="@{view/{id}(id=${order.id})}">View Details</a>
+      <div class="row justify-content-left ordersView" id="ordersView">
+        <div th:each="order: ${orders}">
+          <div class="col-12 d-flex p-2 bg-light rounded-1 mb-3">
+            <div class="img-crop">
+              <img th:if="${order.person.avatar} != null" th:src="${order.person.avatar}" />
+              <img th:if="${order.person.avatar} == null" src="/resources/avatar.png" />
+            </div>
+            <div class="ps-3 w-75">
+              <h5 class="" th:text="${'Full name -' + order.firstName + ' ' + order.lastName}">Card title</h5>
+              <p th:text="'Status of order - ' + ${order.status + ' delivery type - ' + order.deliveryType + ' payment type' + order.paymentType}"></p>
+              <p th:text="'Address - ' + ${order.address + ' phone number - ' + order.phoneNumber}"></p>
+              <p th:text="'total price - ' + ${order.sum} + ' som'"></p>
+              <a th:href="@{view/{id}(id=${order.id})}">View Details</a>
+            </div>
+          </div>
         </div>
       </div>
+
     </div>
   </div>
 </div>

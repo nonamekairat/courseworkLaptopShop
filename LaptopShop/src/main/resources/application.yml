@@ -34,6 +34,8 @@ spring:
               - profile
 server:
   error:
+    whitelabel:
+      enabled: false
     include-exception: true
     include-stacktrace: always
 upload:

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -18,6 +19,10 @@ public class VerificationTokenService {
 
     public VerificationToken findByToken(String token){
         return verificationTokenRepository.findByToken(token);
+    }
+
+    public List<VerificationToken> verificationTokensByPerson(Person person){
+        return verificationTokenRepository.findAllByPerson(person);
     }
 
     public VerificationToken findByPerson(Person person){
@@ -31,6 +36,9 @@ public class VerificationTokenService {
         // set expiry date to 24 hours
         verificationToken.setExpiryDate(calculateExpiryDate(24 * 60));
         verificationTokenRepository.save(verificationToken);
+    }
+    public void deleteByPerson(Person person){
+        verificationTokenRepository.deleteByPerson(person);
     }
 
     private Timestamp calculateExpiryDate(int expiryTimeInMinutes){

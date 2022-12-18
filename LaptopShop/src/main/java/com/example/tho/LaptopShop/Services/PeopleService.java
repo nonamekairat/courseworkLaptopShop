@@ -1,13 +1,8 @@
 package com.example.tho.LaptopShop.Services;
 
-import com.example.tho.LaptopShop.models.Bucket;
-import com.example.tho.LaptopShop.models.Image;
-import com.example.tho.LaptopShop.models.Laptop;
-import com.example.tho.LaptopShop.models.Person;
+import com.example.tho.LaptopShop.models.*;
 import com.example.tho.LaptopShop.models.enums.Role;
-import com.example.tho.LaptopShop.repositories.ImageRepository;
-import com.example.tho.LaptopShop.repositories.OrderRepository;
-import com.example.tho.LaptopShop.repositories.PeopleRepository;
+import com.example.tho.LaptopShop.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,9 +29,15 @@ public class PeopleService {
     private final EmailService emailService;
     private final OrderRepository orderRepository;
     private final ImageRepository imageRepository;
+    private final PasswordEncoder passwordEncoder;
+    private final BucketRepository bucketRepository;
+    private final FavoritesRepository favoritesRepository;
+    private final NotificationRepository notificationRepository;
+    private final ReviewRepository reviewRepository;
     @Value("${upload.path}")
     private String uploadPath;
-
+    private final OrderDetailsRepository orderDetailsRepository;
+    private final LaptopRepository laptopRepository;
 
 
     public List<Person> getUsers(){
@@ -55,7 +56,6 @@ public class PeopleService {
         return peopleRepository.findByUsername(principal.getName()).orElse(new Person());
     }
 
-    private final PasswordEncoder passwordEncoder;
 
     @Transactional
     public void register(Person person){
@@ -136,9 +136,35 @@ public class PeopleService {
         SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
+    @Transactional
     public void deleteUserById(Long id) {
-//        orderRepository.deleteOrdersByPerson(getUserById(id));
-        peopleRepository.deletePersonById(id);
+        Person person = peopleRepository.findById(id).orElse(null);
+
+        verificationTokenService.deleteByPerson(person);
+        notificationRepository.deleteByPerson(person);
+        orderRepository.deleteOrdersByPerson(person);
+
+
+//        List<Review> reviews = reviewRepository.findAllByPerson(person);
+//        for (Review review : reviews) {
+//            Laptop laptop = review.getLaptop();
+//            if(laptop != null) {
+//                System.out.println(laptop.getId());
+//                System.out.println(review);
+//                laptop.removeReview(review);
+//                System.out.println(review);
+//                System.out.println(laptop.getReviews());
+//                laptopRepository.save(laptop);
+//                reviewRepository.save(review);
+//                reviewRepository.delete(review);
+//            }
+//        }
+//        List<Laptop> laptops = laptopRepository.findAllByReviewsContaining()
+//        reviewRepository.deleteAll(reviews);
+
+        if (person != null) {
+            peopleRepository.delete(person);
+        }
     }
 
     public void makeAdmin(Long id) {

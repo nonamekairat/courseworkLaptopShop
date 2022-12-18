@@ -22,4 +22,5 @@ public interface LaptopRepository extends JpaRepository<Laptop, Long> {
     List<Laptop> findAllByModelContainsAndCategoriesContains(String title, Category category);
     List<Laptop> findAllByCategoriesContains(Category category);
     List<Laptop> findAllByReviewsContaining(Review review);
+
 }

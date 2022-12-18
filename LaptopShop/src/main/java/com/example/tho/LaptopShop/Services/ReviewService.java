@@ -19,18 +19,18 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
     private final LaptopRepository laptopRepository;
 
+
     public void save(Review review){
         reviewRepository.save(review);
     }
 
-    public void delete(Review review){
-        List<Laptop> laptops = laptopRepository.findAllByReviewsContaining(review);
-        laptops.forEach(laptop -> {
-            List<Review> reviews = laptop.getReviews();
-            reviews.remove(review);
-            laptop.setReviews(reviews);
-            laptopRepository.save(laptop);
-        });
+    public void delete(Review review, Long laptop_id){
+        Laptop laptop = laptopRepository.findById(laptop_id).orElse(null);
+        List<Review> reviews = laptop.getReviews();
+        reviews.remove(review);
+        laptop.setReviews(reviews);
+        laptopRepository.save(laptop);
+
         reviewRepository.delete(review);
     }
     public Review findById(Long id){

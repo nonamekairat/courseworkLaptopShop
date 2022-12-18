@@ -7,10 +7,12 @@ import com.example.tho.LaptopShop.Services.OrderService;
 import com.example.tho.LaptopShop.Services.PeopleService;
 import com.example.tho.LaptopShop.models.Category;
 import com.example.tho.LaptopShop.models.Laptop;
+import com.example.tho.LaptopShop.models.Order;
 import com.example.tho.LaptopShop.models.Person;
 import com.example.tho.LaptopShop.models.enums.OrderStatus;
 import com.example.tho.LaptopShop.util.PersonValidator;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +24,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
@@ -37,18 +41,32 @@ public class AdminController {
 
 
     @GetMapping("/order/view")
-    public String viewOrders(Principal principal, Model model){
+    public String viewOrders(@RequestParam(name ="status",required = false) String status,
+            @RequestParam(name = "sort",required = false, defaultValue = "created") String sort,
+            @RequestParam(name = "field2", required = false, defaultValue = "DESC") String ascDesc, Principal principal, Model model){
+
+        List<Sort.Order> toOrder = new ArrayList<>();
+        if(sort != null) {
+            if(ascDesc == null) toOrder.add(new Sort.Order(Sort.Direction.ASC, sort));
+            else if(ascDesc.equals("DESC")) toOrder.add(new Sort.Order(Sort.Direction.DESC, sort));
+            else toOrder.add(new Sort.Order(Sort.Direction.ASC, sort));
+        }
+        List<Order> orderList = orderService.orderList(status,toOrder);
 
         model.addAttribute("person",peopleService.getUserByPrincipal(principal));
-        model.addAttribute("orders",orderService.orderList());
+        model.addAttribute("orders",orderList);
+        model.addAttribute("statuses", Arrays.stream(OrderStatus.values()).toList());
         return "orders/orders-view";
     }
 
     @GetMapping("/order/view/{id}")
     public String orderInfo(@PathVariable Long id, Principal principal, Model model) {
+        Order order = orderService.getOrderById(id);
+
         model.addAttribute("person",peopleService.getUserByPrincipal(principal));
-        model.addAttribute("order",orderService.getOrderById(id));
+        model.addAttribute("order",order);
         model.addAttribute("statuses", Arrays.stream(OrderStatus.values()).toList());
+        model.addAttribute("laptops",orderService.laptopList(order));
         return "orders/order-info";
     }
     @PostMapping("/order/view/{id}/change-status")
@@ -70,8 +88,7 @@ public class AdminController {
     public String editLaptop(@ModelAttribute("laptop") Laptop laptop,
                              @RequestParam("file") MultipartFile file) throws IOException {
         laptopService.save(laptop,file);
-        return "redirect:/";
-
+        return "redirect:/laptop/view/" + laptop.getId();
     }
     @GetMapping("/users/view")
     public String viewUsers(Model model, Principal principal){
@@ -128,6 +145,12 @@ public class AdminController {
                                @RequestParam("category3")String category3) throws IOException {
 
         laptopService.save(laptop,file,category1,category2,category3);
+        return "redirect:/";
+    }
+    @PostMapping("/laptop/delete/{laptop_id}")
+    public String deleteLaptop(@PathVariable("laptop_id") Long laptop_id){
+
+        laptopService.deleteLaptop(laptopService.getLaptopById(laptop_id));
         return "redirect:/";
     }
 

@@ -13,6 +13,7 @@ import java.nio.file.attribute.FileAttributeView;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "people")
@@ -68,6 +69,10 @@ public class Person {
 
     @Column(name = "reset_password_token")
     private String resetPasswordToken;
+
+    public String getStringRole(){
+        return roles.stream().map(String::valueOf).collect(Collectors.joining());
+    }
 
 
 }

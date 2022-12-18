@@ -19,7 +19,7 @@
           <h1 th:text="${bucket.getSum()}"></h1>
         </div>
 
-        <div th:if="${!bucket.laptops.isEmpty()}" class="col-5 mb-3">
+        <div th:if="${!bucket.laptops.isEmpty()}" class="col-2 mb-3">
           <form  th:method="POST" th:action="@{/bucket/clear}">
             <div class="text-center">
               <button class="btn btn-primary profile-button" type="submit">clear bucket</button></div>
@@ -31,28 +31,11 @@
         <div th:if="${bucket.laptops.isEmpty()}" class="col-12 mb-3">
           <h5>No Laptops in bucket</h5>
         </div>
-
-        <div th:each="laptop: ${bucket.laptops}" class="col-8 mb-3">
-          <table class="table">
-            <tbody>
-            <tr>
-              <th>Title</th>
-              <td th:text="${laptop.title}">Title</td>
-            </tr>
-            <tr>
-              <th>Model</th>
-              <td th:text="${laptop.model}">Model</td>
-            </tr>
-            <tr>
-              <th>Price</th>
-              <td th:text="${laptop.price}">Price</td>
-            </tr>
-            <tbody/>
-          </table>
+        <div class="row">
+          <div class="col-10">
+            <div th:replace="blocks/fragments.html :: div.laptopsView" th:with="laptops=${laptops}"></div>
+          </div>
         </div>
-
-
-
 
 
 

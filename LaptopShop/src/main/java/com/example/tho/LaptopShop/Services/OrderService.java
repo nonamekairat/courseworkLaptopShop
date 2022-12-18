@@ -7,6 +7,7 @@ import com.example.tho.LaptopShop.repositories.LaptopRepository;
 import com.example.tho.LaptopShop.repositories.OrderRepository;
 import com.example.tho.LaptopShop.repositories.PeopleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
@@ -28,8 +29,14 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public List<Order> orderList(){
-        return orderRepository.findAll();
+    public List<Order> orderList(String status, List<Sort.Order> orders){
+        if(status != null){
+
+            return orderRepository.findAllByStatus(OrderStatus.valueOf(status), Sort.by(orders));
+        }
+        else {
+            return orderRepository.findAll(Sort.by(orders));
+        }
     }
 
     public List<Order> orderListByUser(Person person){
@@ -47,6 +54,33 @@ public class OrderService {
 
     public void setNewStatus(Long orderId, String newStatus) {
         Order order = orderRepository.findById(orderId).get();
+
+        if(order.getStatus().equals(OrderStatus.CANCELED) && newStatus.equals(String.valueOf(OrderStatus.CANCELED))){
+            return;
+        }
+
+        if(order.getStatus().equals(OrderStatus.CANCELED) && !newStatus.equals(String.valueOf(OrderStatus.CANCELED))){
+
+            List<Laptop> laptops = order.getDetails().stream().map(OrderDetails::getLaptop).toList();
+            for (int i = 0; i < laptops.size(); i++) {
+                Laptop laptop = laptops.get(i);
+                laptop.setAmount(laptop.getAmount() - 1);
+                laptopRepository.save(laptop);
+            }
+
+        }
+
+        if(!order.getStatus().equals(OrderStatus.CANCELED) && newStatus.equals(String.valueOf(OrderStatus.CANCELED))){
+
+            List<Laptop> laptops = order.getDetails().stream().map(OrderDetails::getLaptop).toList();
+            for (int i = 0; i < laptops.size(); i++) {
+                Laptop laptop = laptops.get(i);
+                laptop.setAmount(laptop.getAmount() + 1);
+                laptopRepository.save(laptop);
+            }
+
+        }
+
         order.setStatus(OrderStatus.valueOf(newStatus));
         orderRepository.save(order);
     }
@@ -99,5 +133,11 @@ public class OrderService {
 
 
         emailService.sendMail(emailMessage);
+    }
+
+    public List<Laptop> laptopList(Order order) {
+        if (order.getDetails() != null)
+            return order.getDetails().stream().map(OrderDetails::getLaptop).toList();
+        else return new ArrayList<>();
     }
 }
